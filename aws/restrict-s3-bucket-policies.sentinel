@@ -22,8 +22,10 @@ for allS3Buckets as address, S3Buckets {
 	# Warnings will be printed for all violations since the last parameter is true
 	nomatch = false
 	validated = false
+	haveS3 = false
 
 	for allS3Buckets as address, buckets {
+		haveS3 = true
 		bucket = buckets.name
 
 		for allS3BucketsACL as address, ACLS {
@@ -45,6 +47,10 @@ for allS3Buckets as address, S3Buckets {
 			# This is validating all ACLs are either "Private or the ACL isn't assigned to the created S3 bucket"
 			validated = length(nonPrivateS3Buckets["messages"]) is 0 and nomatch is true
 		}
+	}
+
+	if haveS3 matches false {
+		validated = true
 	}
 }
 
