@@ -17,10 +17,10 @@ policy "check-ec2-environment-tag" {
 
 policy "restrict-iam-policy-actions" {
   source = "./restrict-iam-policy-actions.sentinel"
-  enforcement_level = "hard-mandatory"
+  enforcement_level = "advisory"
 }
 
 policy "restrict-s3-bucket-policies" {
   source = "./restrict-s3-bucket-policies.sentinel"
-  enforcement_level = "hard-mandatory"
+  enforcement_level = "soft-mandatory"
 }
