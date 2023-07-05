@@ -15,6 +15,7 @@ allS3Buckets = plan.find_resources("aws_s3_bucket")
 #Variables to support check of legacy S3 syntax vs new Seperate S3 Resources being used
 match = false
 validated = false
+haveS3 = false
 allowed_acls = ["private", "public-read", "public-read-write", "aws-exec-read", "authenticated-read", "log-delivery-write"]
 
 for allS3Buckets as address, S3Buckets {
@@ -22,10 +23,9 @@ for allS3Buckets as address, S3Buckets {
 	# Warnings will be printed for all violations since the last parameter is true
 	nomatch = false
 	validated = false
-	haveS3 = false
+	haveS3 = true
 
 	for allS3Buckets as address, buckets {
-		haveS3 = true
 		bucket = buckets.name
 
 		for allS3BucketsACL as address, ACLS {
@@ -48,10 +48,10 @@ for allS3Buckets as address, S3Buckets {
 			validated = length(nonPrivateS3Buckets["messages"]) is 0 and nomatch is true
 		}
 	}
+}
 
-	if haveS3 matches false {
-		validated = true
-	}
+if haveS3 is false {
+	validated = true
 }
 
 # Control 101 - ACL set to "Private" on S3 bucket
